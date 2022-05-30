@@ -50,6 +50,10 @@ def call_clang_to_compile(config: dict, verbose: bool, project_name: str):
 
     for source in config.get("executable").sources:
         command_line.append(source)
+        # command_line.append(
+        #     './zork_proj_example/src/zork_proj_example/math.cpp'
+        # )
+        pass
 
     # Generates a compiler call to prebuild the module units, in case that
     # the attribute it's present, have a valid path to the .cppm module units
@@ -66,10 +70,19 @@ def call_clang_to_compile(config: dict, verbose: bool, project_name: str):
         for module_src in config['language'].modules:
             command_line.append(module_src)
         command_line.append('-fmodules')
-        command_line.append('-fmodules-ts')
+        command_line.append('-fimplicit-modules')
+        command_line.append('-fPIC')
+        # command_line.append('-fmodules-ts')
+        command_line.append('-Xclang')
         command_line.append(
             f'-fprebuilt-module-path={prebuild_modules_path}'
         )
+        command_line.append(
+            f'-fmodule-file={prebuild_modules_path}/math.pcm'
+        )
+        # command_line.append(
+        #     '-fprebuilt-implicit-modules'
+        # )
 
     return command_line
 

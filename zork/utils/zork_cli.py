@@ -7,7 +7,7 @@ import argparse
 import subprocess
 
 from utils.constants import \
-    ZORK_CONF_AUTOG, MAIN_CPP, SRC_MOD_FILE
+    INTERFACE_MOD_FILE, ZORK_CONF_AUTOG, MAIN_CPP, SRC_MOD_FILE
 
 
 def command_line_interface():
@@ -106,6 +106,10 @@ def new_project_autogenerator(
     subprocess.Popen([
         'mkdir', f'{project_name}/include/{project_name}'
     ]).wait()
+    file_path: str = f'{project_name}/include/{project_name}/math'
+    file_ext: str = "cppm" if cpp_compiler == "clang" else "ixx"
+    with open(f'{file_path}.{file_ext}', 'w') as interface_mod_file:
+        interface_mod_file.write(INTERFACE_MOD_FILE)
 
     subprocess.Popen([
         'mkdir', f'{project_name}/src'
@@ -113,10 +117,9 @@ def new_project_autogenerator(
     subprocess.Popen([
         'mkdir', f'{project_name}/src/{project_name}'
     ]).wait()
-    # Generates a module source file
-    file_path: str = f'{project_name}/src/{project_name}/math'
-    file_ext: str = "cppm" if cpp_compiler == "clang" else "ixx"
-    with open(f'{file_path}.{file_ext}', 'w') as src_mod_file:
+    # Generates a CPP file from a module interface file
+    file_path: str = f'{project_name}/src/{project_name}/math.cpp'
+    with open(file_path, 'w') as src_mod_file:
         src_mod_file.write(SRC_MOD_FILE)
 
     subprocess.Popen([
