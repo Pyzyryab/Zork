@@ -82,9 +82,7 @@ def call_clang_to_compile(config: dict, verbose: bool, project_name: str):
 
         for module_ifc in interfaces:
             command_line.append(module_ifc)
-            # TODO Windows throws tremendísimo error
-            # Explicitly adds the interface as module files
-            command_line.append(f'-fmodule-file={module_ifc}')
+
         for module_src in implementations:
             command_line.append(module_src)
 
